@@ -1,6 +1,7 @@
-import matplotlib
-
-
+import matplotlib.pyplot as plt
+import numpy as np
+import time
+import random
 #współczynniki są podawane w konwencji ( wsp przy x^0 , wsp przy x^1 , ... ,wsp przy x^n)
 def zad1_1(val,coeff):
     """coeff to lista współczynników wielomianu"""
@@ -95,4 +96,62 @@ def example4(A, B): # assume that A and B have equal length
     return count    
 
 def zad2_test():
+    x=range(1,500,10)
+    A=[random.choices(range(50),k=i) for i in range(1,500,10)]
+    B=[random.choices(range(50),k=i) for i in range(1,500,10)]
+    fig, ax = plt.subplots(2,2)
+    #plt.yscale("log")
+    #plt.xscale("log")
+    wyniki=[[],[],[],[]]
+    funkcje=[example1,example2,example3]
+    for rozklad in A:
+        for i in range(3):
+            t_begin=time.time_ns()
+            funkcje[i](rozklad)
+            t_end=time.time_ns()
+            wyniki[i].append(t_end-t_begin)
+       
+    for j in range(len(A)):
+        t_begin=time.time_ns()
+        example4(A[j],B[j])
+        t_end=time.time_ns()
+        wyniki[3].append(t_end-t_begin)
+
+    ax0=wyniki[0]
+    print(wyniki[0])
+    ax1=wyniki[1]
+    ax2=wyniki[2]
+    ax3=wyniki[3]
+
+    ax[0,0].plot(x ,ax0, label="example1")
+    ax[0,0].set_xlabel("example1")
+    ax[0,1].plot(x ,ax1, label="example2")
+    ax[0,1].set_xlabel("example2")
+    ax[1,0].plot(x ,ax2, label="example3")
+    ax[1,0].set_xlabel("example3")
+    ax[1,1].plot(x ,ax3, label="example4")
+    ax[1,1].set_xlabel("example4")
+    #ax.legend()
+    plt.show()
+
+
+def zad3():
+    x=range(1,1000,1)
+    fig, ax = plt.subplots()
+    A=[random.choices(range(50),k=i) for i in range(1,1000,1)]
+    wyniki=[[],[]]
+    f=lambda n : 6*n*np.log(n)
+    for rozklad in A:
+        t_begin=time.time_ns()
+        sorted(rozklad)
+        t_end=time.time_ns()
+        wyniki[0].append(t_end-t_begin)
+        wyniki[1].append(f(len(rozklad)))
+    ax1=wyniki[0]
+    ax2=wyniki[1]
+    ax.plot(x,ax1,label="sorted")
+    ax.plot(x,ax2,label="6 n log n")
+    ax.legend()
+    plt.show()
+
 
