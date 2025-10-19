@@ -155,6 +155,6 @@ def zad3():
     plt.show()
 
 
-sprawdzenie_poprawnosci_zad1(1,(1,-2,1))
+sprawdzenie_poprawnosci_zad1(1,(1,2,1))
 zad2_test()
 zad3()
