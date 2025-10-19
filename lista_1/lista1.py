@@ -50,10 +50,10 @@ def zad1_3(val,coeff):
         sum=val*sum+coeff[i]
     return sum    
 
-#def sprawdzenie_poprawnosci_zad1(val,coeff):
-#    print(zad1_1(val,coeff))
-#    print(zad1_2(val,coeff))
-#    print(zad1_3(val,coeff))
+def sprawdzenie_poprawnosci_zad1(val,coeff):
+    print(zad1_1(val,coeff))
+    print(zad1_2(val,coeff))
+    print(zad1_3(val,coeff))
 
 def example1(S):
     """Return the sum of the elements in sequence S."""
@@ -155,3 +155,6 @@ def zad3():
     plt.show()
 
 
+sprawdzenie_poprawnosci_zad1(1,(1,-2,1))
+zad2_test()
+zad3()
