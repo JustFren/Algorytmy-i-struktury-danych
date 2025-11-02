@@ -11,9 +11,6 @@ def max_el(S,i,max):
 #print(max_el(s,0,0))
 #zad1
 
-#zad2
-#zad2
-
 #zad3
 def minmax_el(S,i,ext):
     #ext=[min,max]
@@ -46,5 +43,26 @@ def czy_palindrom(S,n):
 #zad5
 
 #zad6
-print(os.listdir("./lista_2/ex_folder"))
+def get_file(path,filename):
+    path=os.getcwd()+path[1:]
+    dir_list=os.listdir(path)
+    output=[]
+    def _get_file(path,filename,dir_list,output):
+        temp_path=path
+        if os.path.isfile(temp_path):
+                #print(temp_path)
+                out=""
+                for i in range(len(filename)):
+                    out+=temp_path[-(i+1)]
+                if out[::-1]==filename:
+                    output.append(temp_path)
+                return
+        dir_list=os.listdir(path)
+        for dir in dir_list:
+            temp_path=path+r'\\'+f"{dir}"
+            _get_file(path+"\\"+f"{dir}",filename,dir_list,output)
+        return output    
+    return _get_file(path,filename,dir_list,output)  
+
+print(get_file(".\\lista_2\\ex_folder","plik1"))
 #zad6
