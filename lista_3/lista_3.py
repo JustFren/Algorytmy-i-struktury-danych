@@ -2,6 +2,7 @@ import ctypes #tablice niskopoziomowe
 import matplotlib.pyplot as plt
 import random
 import time
+import copy
 #zad1
 class DynamicArray:
     def __init__(self):
@@ -89,6 +90,8 @@ def check_1():
     print(a)
     a.remove(3)
     print(a)
+print("zad1")
+check_1()
 #zad1
 
 #zad2
@@ -149,6 +152,7 @@ def check_2():
     ax[1,1].set_title("pop(i-1)")
     
     plt.show()
+
 #zad2
 
 #zad3
@@ -166,6 +170,7 @@ def check_3(n):
         return res    
 
     print(f"sum is {sum_of_table(list)}")
+
 #zad3
 
 #zad4
@@ -189,28 +194,40 @@ def check_4():
         t_2.append(end-begin)
         
 
-    fig, ax = plt.subplots(1,2)
+    fig, ax = plt.subplots(1,3)
     x=range(N)
-    ax[0].plot(x ,t_1, label="pop(0)")
+    ax[0].plot(x ,t_1, label="append")
     ax[0].set_xlabel("list size")
     ax[0].set_ylabel("time(ns)")
     ax[0].set_title("append")
-    ax[1].plot(x ,t_2, label="pop(i//3)")
+    ax[1].plot(x ,t_2, label="extend")
     ax[1].set_xlabel("list size")
     ax[1].set_ylabel("time(ns)")
     ax[1].set_title("extend")
+    
+    
+    ax[2].plot(x ,t_1, label="append")
+    ax[2].set_xlabel("list size")
+    ax[2].set_ylabel("time(ns)")
+    ax[2].set_title("append vs extend")
+    ax[2].plot(x ,t_2, label="extend")
+    ax[2].legend()
+
     plt.show()
+
 #zad4
 
 #zad5
 class Queue:
-    DEFAULT_CAPACITY = 10
+    DEFAULT_CAPACITY = 16
     def __init__(self):
         self._data = [None]*Queue.DEFAULT_CAPACITY
         self._size = 0
         self._front = 0
     def __len__(self):
         return self._size
+    def __str__(self):
+        return str(self._data)
     def is_empty(self):
         return self._size == 0
     def first(self):
@@ -241,6 +258,243 @@ class Queue:
             self._data[k] = old[walk]
             walk = (1 + walk)%len(old)
         self._front = 0
+
+def check_5():
+    q=Queue()
+    for i in range(16):
+        q.enqueue(i)
+    print(q)    
+    for i in range(8):
+        q.dequeue()    
+    print(q)
+
+
 #zad5
 
 #zad6
+class deque(Queue):
+    def __init__(self):
+        super().__init__()
+        self.back=0
+    def add_first(self,e):
+        if self._size == len(self._data):
+            self._resize(2*len(self._data))
+        self._size+=1
+        for i in range(self._size):
+            temp=self._data[i]
+            self._data[i]=e
+            e=temp
+            #print(self._data)
+
+    def add_last(self,e):
+        self.enqueue(e)
+    def delete_first(self):
+        self.dequeue()
+    def delete_last(self):
+        if self.is_empty():
+            raise ValueError('Queue is empty')
+        if self._size < len(self._data)//2:
+            self._resize(len(self._data)//2+1)
+        self._size-=1
+        self._data[self._size]=None    
+
+    def first(self):
+        return self._data[0]
+    def last(self):
+        return self._data[self._size-1]
+def check_6():
+    d = deque()
+    for i in range(10):
+        d.add_last(i)
+    print(d)
+    d.add_first(100)
+    d.delete_first()
+    d.delete_last()
+
+
+#zad6
+
+#zad7
+class Empty(Exception):
+    pass
+
+class stack():
+    def __init__(self):
+        self._data = [] #nowy pusty stos
+    def __len__(self):
+        return len(self._data)
+    def is_empty(self):
+        return len(self._data)==0
+    def push(self,e):
+        self._data.append(e)
+    def top(self):
+        if self.is_empty():
+            raise Empty('Stack is empty')
+        return self._data[-1]
+    def pop(self):
+        if self.is_empty():
+            raise Empty('Stack is empty')
+        return self._data.pop()
+    def __str__(self):
+        return str(self._data)
+    
+def check_html(str):
+    s=stack()
+    str+=' '
+    for i in range(len(str)):
+        if str[i]=='<':
+            begin=i
+        if str[i]=='>':
+            end=i+1
+            last=None
+            try:
+                last=s.top()
+            except:
+                pass
+            temp=str[begin:end]
+            s.push(temp)
+            if temp[1]=='/':
+                if last == None:
+                    return False
+                if last[1:] == temp[2:]:
+                    s.pop()
+                    s.pop()
+                else :
+                    return False
+    if len(s)>0 :
+        return False            
+    return True
+
+def check_7():
+    html_strings=["<html><head><title>T</title></head><body><div><p>OK</p></div></body></html>"\
+              ,"<html><body><p>Tekst<div>coś</div></body></html>"\
+              ,"<div><span>Tekst</div></span>"\
+              ,"<html><body><ul><li>1<li>2</ul></body></html>"
+             ]
+    for str in html_strings:
+        print(check_html(str))
+
+#zad7
+
+#zad8
+def perms(n):
+    temp = [[],[*range(n)]]
+    s=stack()
+    s.push(temp)
+    out=[]
+    while len(s)!=0:
+        temp=s.top()
+        if len(temp[1])==0:
+            out.append(temp[0])
+            s.pop()
+            continue
+        s.pop()
+        #print(temp)
+        #print()
+        for i in range(len(temp[1])):
+            temp2=copy.deepcopy(temp[0])
+            temp2.append(temp[1][i])
+            temp3=copy.deepcopy(temp[1])
+            temp3.remove(temp[1][i])
+            
+            s.push([temp2,temp3])
+        
+        #print(s)
+
+
+    return out
+
+#zad8
+
+#zad9
+class stack_with_queue(Queue):
+    def __init__(self):
+        super().__init__()
+    #złożoność O(1)
+    def push(self,e):
+        self.enqueue(e)
+    #złożoność O(1)
+    def pop(self):
+        if self.is_empty():
+            raise ValueError('Queue is empty')
+        if self._size < len(self._data)//2:
+            self._resize(len(self._data)//2+1)
+        self._size-=1
+        temp=self._data[self._size]
+        self._data[self._size]=None
+        return temp
+    #złożoność O(1) 
+    def top(self):
+        return self._data[self._size-1]      
+def check_9():
+    s=stack_with_queue()
+    for i in range(10):
+        s.push(i)
+    print(s)
+    s.top()
+    s.pop()
+    print(s)
+#zad9
+
+#zad10
+class queue_with_stack():
+    def __init__(self):
+        self._main=stack()
+        self._dump=stack()
+    def __str__(self):
+        return str(self._main)
+    def __len__(self):
+        return len(self._main)
+    def isEmpty(self):
+        return len(self._main) == 0 
+    def first(self):
+        while len(self._main)!=1:
+            self._dump.push(self._main.pop())    
+        out=self._main.top()
+        while len(self._dump)!=0:
+            self._main.push(self._dump.pop())
+        return out
+
+    def enqueue(self,e):
+        self._main.push(e)
+    def dequeue(self):
+        while len(self._main)!=1:
+            self._dump.push(self._main.pop())    
+        out=self._main.top()
+        self._main.pop()
+        while len(self._dump)!=0:
+            self._main.push(self._dump.pop())
+        return out
+
+def check_10():
+    q=queue_with_stack()
+    for i in range(16):
+        q.enqueue(i)
+    print(q)    
+    for i in range(8):
+        q.dequeue()    
+    print(q)
+    print(q.first())
+    print(q.isEmpty())
+#zad10
+
+print("zad1")
+check_1()
+print("\nzad2")
+check_2()
+print("\nzad3")
+check_3(10)
+print("\nzad4")
+check_4()
+print("\nzad5")
+check_5()
+print("\nzad6")
+check_6()
+print("\nzad7")
+check_7()
+print("\nzad8")
+print(perms(3))
+print("\nzad9")
+check_9()
+print("\nzad10")
+check_10()
