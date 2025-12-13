@@ -50,7 +50,6 @@ def get_file(path,filename):
     def _get_file(path,filename,dir_list,output):
         temp_path=path
         if os.path.isfile(temp_path):
-                #print(temp_path)
                 out=""
                 for i in range(len(filename)):
                     out+=temp_path[-(i+1)]
@@ -60,9 +59,9 @@ def get_file(path,filename):
         dir_list=os.listdir(path)
         for dir in dir_list:
             temp_path=path+r'\\'+f"{dir}"
-            _get_file(path+"\\"+f"{dir}",filename,dir_list,output)
+            _get_file(path+'\\'+f"{dir}",filename,dir_list,output)
         return output    
     return _get_file(path,filename,dir_list,output)  
 
-print(get_file(".\\lista_2\\ex_folder","plik1"))
+print(get_file(".\\lista_2\\ex_folder","plik2"))
 #zad6

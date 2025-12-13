@@ -119,6 +119,8 @@ def zad2_test():
 
     ax0=wyniki[0]
     print(wyniki[0])
+    print(wyniki[1])
+    print(wyniki[2])
     ax1=wyniki[1]
     ax2=wyniki[2]
     ax3=wyniki[3]
@@ -136,9 +138,9 @@ def zad2_test():
 
 
 def zad3():
-    x=range(1,1000,1)
+    x=range(1,10000,1)
     fig, ax = plt.subplots()
-    A=[random.choices(range(50),k=i) for i in range(1,1000,1)]
+    A=[random.choices(range(50),k=i) for i in range(1,10000,1)]
     wyniki=[[],[]]
     f=lambda n : 6*n*np.log(n)
     for rozklad in A:
@@ -155,6 +157,6 @@ def zad3():
     plt.show()
 
 
-sprawdzenie_poprawnosci_zad1(1,(1,2,1))
-zad2_test()
+#sprawdzenie_poprawnosci_zad1(1,(1,2,1))
+#zad2_test()
 zad3()
