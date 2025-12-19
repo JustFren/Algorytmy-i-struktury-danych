@@ -110,9 +110,42 @@ for i in test_table:
 
 
 #zad6
-class minheap():
-    def __init__(self,start_heap=[]):
-        self._A=start_heap
-    
+def max_o3(a,b,c):
+    temp=(abs(a-b)+a+b)/2
+    return (abs(temp-c)+temp+c)/2
 
+
+class minheap():
+    def __init__(self,starting_list=[]):
+        self._A=starting_list
+        self._inital_heapify()
+    
+    def __repr__(self):
+        return str(self._A)
+    
+    def _get_parent(self,index):
+        if index%2==0:
+            return index//2-1
+        if index%2==1:
+            return (index-1)//2
+    def _heapify_up(self,index):
+        while index!=0:
+            if self._A[index]<self._A[self._get_parent(index)]:
+                temp=self._A[self._get_parent(index)]
+                self._A[self._get_parent(index)]=self._A[index]
+                self._A[index]=temp
+                index=self._get_parent(index)
+                #print(self._A)
+            else:
+                break
+    def _inital_heapify(self):
+        for i in range(len(self._A)):
+            self._heapify_up(i)
+
+
+
+test_table=[2,3,4,5,1,6,0]
+a=minheap(starting_list=test_table)
+print(a)
+# [0, 1 2, 3 4 5 6]
 #zad6
