@@ -110,15 +110,25 @@ for i in test_table:
 
 
 #zad6
+def max(a,b):
+    if a==None:
+        if b==None:
+            return None
+        a=b-1
+    if b==None:
+        if a==None:
+            return None
+        b=a-1
+    return (abs(a-b)+a+b)/2        
+
 def max_o3(a,b,c):
-    temp=(abs(a-b)+a+b)/2
-    return (abs(temp-c)+temp+c)/2
+    m=max(a,b)
+    return max(m,c)
 
-
-class minheap():
+class maxheap():
     def __init__(self,starting_list=[]):
         self._A=starting_list
-        self._inital_heapify()
+        self._Heapify_all()
     
     def __repr__(self):
         return str(self._A)
@@ -128,24 +138,68 @@ class minheap():
             return index//2-1
         if index%2==1:
             return (index-1)//2
+    def _get_children(self,index,stop=None):
+        if stop==None:
+            stop=len(self._A)-1
+        if (2*index)+1>stop:
+            return [None,None]
+        if (2*index)+2>stop:
+            return [(2*index)+1,None]
+        return [(2*index)+1,(2*index)+2]        
     def _heapify_up(self,index):
         while index!=0:
-            if self._A[index]<self._A[self._get_parent(index)]:
+            if self._A[index]>self._A[self._get_parent(index)]:
                 temp=self._A[self._get_parent(index)]
                 self._A[self._get_parent(index)]=self._A[index]
                 self._A[index]=temp
                 index=self._get_parent(index)
                 #print(self._A)
             else:
-                break
-    def _inital_heapify(self):
+                break        
+    def _heapify_down(self,index,stop=None):
+        while index!=None:
+            b,c=self._get_children(index,stop)
+            if b==None:
+                temp_b=None
+            else:
+                temp_b=self._A[b]
+            if c==None:
+                temp_c=None
+            else:
+                temp_c=self._A[c]
+                        
+            if self._A[index]!=max_o3(self._A[index],temp_b,temp_c):
+                if c==None or self._A[c]<=self._A[b]:
+                    temp=self._A[b]
+                    self._A[b]=self._A[index]
+                    self._A[index]=temp
+                    index=b
+                else:
+                    temp=self._A[c]
+                    self._A[c]=self._A[index]
+                    self._A[index]=temp
+                    index=c
+            else:
+                break                
+    def heapsort(self):
+        stop=len(self._A)-1
+        while stop!=0:
+            temp=self._A[stop]
+            self._A[stop]=self._A[0]
+            self._A[0]=temp
+            stop-=1
+            self._heapify_down(0,stop)
+
+
+    def _Heapify_all(self):
         for i in range(len(self._A)):
             self._heapify_up(i)
 
-
-
-test_table=[2,3,4,5,1,6,0]
-a=minheap(starting_list=test_table)
+test_table=random.choices(population=range(0,101),k=20)
+a=maxheap(starting_list=test_table)
+a.heapsort()
 print(a)
+
+
 # [0, 1 2, 3 4 5 6]
 #zad6
