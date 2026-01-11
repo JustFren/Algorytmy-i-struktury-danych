@@ -1,0 +1,11 @@
+strict digraph {
+	A [label=30]
+	B [label=40]
+	C [label=24]
+	D [label=58]
+	E [label=48]
+	F [label=26]
+	G [label=11]
+	H [label=13]
+	A -> B
+}

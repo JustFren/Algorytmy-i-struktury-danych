@@ -1,5 +1,8 @@
 import random
+import graphviz
 from math import floor
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
 class HashTable():
     def __init__(self,size=11,mode="chain"):
@@ -89,10 +92,14 @@ class Binary_Tree():
         self.last_empty_index+=1
         self._resize(self._size+2)
         self._size+=1
-    def get_left_child(self,index):
-        return 2*index+1
-    def get_right_child(self,index):
-        return 2*index+2
+    def get_children(self,index,stop=None):
+        if stop==None:
+            stop=len(self._A)-1
+        if (2*index)+1>stop:
+            return [None,None]
+        if (2*index)+2>stop:
+            return [(2*index)+1,None]
+        return [(2*index)+1,(2*index)+2]
     def get_parent(self,index):
         if index==0:
             raise ValueError("root has no parent")
@@ -108,6 +115,43 @@ for i in test_table:
 
 #zad4
 
+#zad5
+g=Binary_Tree()
+dot = graphviz.Digraph(strict=True)
+list1=[30,40,24,58,48,26,11,13]
+for i in range(8):
+    dot.node(f"{chr(i+65)}",f"{list[i]}")
+    g.add_element([f"{chr(i+65)}",list[i]])
+relations=[]
+
+for i in range(4):
+    break
+    f=open(f"drzewo_binarne{i}{0}","w")
+    children=g.get_children(i)
+    temp=""
+    #print(children)
+    if children[0]==None or g._A[children[0]]==None:
+        continue
+    temp+=g._A[i][1][0]
+    temp+=g._A[children[0]][1][0]
+    relations.append(temp)
+    temp=""
+    dot.edges(relations)
+    print(relations)
+    f.write(dot.source)
+    f.close()
+    t=open(f"drzewo_binarne{i}{1}","w")
+    if children[1]==None or g._A[children[1]]==None:
+        continue
+    temp+=g._A[i][1][0]
+    temp+=g._A[children[1]][1][0]
+    relations.append(temp)
+    dot.edges(relations)
+    print(relations)
+    t.write(dot.source)   
+    t.close()
+
+#zad5
 
 #zad6
 def max(a,b):
@@ -203,3 +247,54 @@ print(a)
 
 # [0, 1 2, 3 4 5 6]
 #zad6
+
+#zad 7
+n = 150
+dane = [random.randint(5, 100) for _ in range(n)]
+historia_stanow = []
+
+def quicksort(tab, low, high):
+    if low < high:
+        p_idx = partition(tab, low, high)
+        quicksort(tab, low, p_idx - 1)
+        quicksort(tab, p_idx + 1, high)
+
+def partition(tab, low, high):
+    pivot = tab[high]
+    i = low - 1
+    for j in range(low, high):
+        if tab[j] <= pivot:
+            i += 1
+            tab[i], tab[j] = tab[j], tab[i]
+            historia_stanow.append((list(tab), j, high, i))
+            
+    tab[i + 1], tab[high] = tab[high], tab[i + 1]
+    historia_stanow.append((list(tab), i + 1, high, i + 1))
+    return i + 1
+
+quicksort(dane.copy(), 0, len(dane) - 1)
+
+fig, ax = plt.subplots(figsize=(10, 6))
+bar_rects = ax.bar(range(len(dane)), dane, align="edge", color="skyblue")
+ax.set_ylim(0, 110)
+ax.set_title("Animacja QuickSort (Metoda migawek)")
+
+def update(frame):
+    tab_stan, curr_j, pivot_idx, curr_i = frame
+    for idx, rect in enumerate(bar_rects):
+        rect.set_height(tab_stan[idx])
+        if idx == pivot_idx:
+            rect.set_color('red')
+        elif idx == curr_j:
+            rect.set_color('orange')
+        elif idx == curr_i:
+            rect.set_color('green')
+        else:
+            rect.set_color('skyblue')
+
+# 3. Tworzenie animacji
+ani = animation.FuncAnimation(fig, update, frames=historia_stanow, 
+                              interval=50, repeat=False)
+
+plt.show()
+#zad 7
