@@ -120,8 +120,8 @@ g=Binary_Tree()
 dot = graphviz.Digraph(strict=True)
 list1=[30,40,24,58,48,26,11,13]
 for i in range(8):
-    dot.node(f"{chr(i+65)}",f"{list[i]}")
-    g.add_element([f"{chr(i+65)}",list[i]])
+    dot.node(f"{chr(i+65)}",f"{list1[i]}")
+    g.add_element([f"{chr(i+65)}",list1[i]])
 relations=[]
 
 for i in range(4):
