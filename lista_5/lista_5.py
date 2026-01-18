@@ -292,7 +292,6 @@ def update(frame):
         else:
             rect.set_color('skyblue')
 
-# 3. Tworzenie animacji
 ani = animation.FuncAnimation(fig, update, frames=historia_stanow, 
                               interval=50, repeat=False)
 
